@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Enablement Intake — AirOps</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display&display=swap');
+
+  :root {
+    --white: #ffffff;
+    --off-white: #F8FFFA;
+    --near-black: #000d05;
+    --green-50: #f8fffb;
+    --green-100: #dfeae3;
+    --green-200: #CCFFE0;
+    --green-500: #008c44;
+    --green-600: #002910;
+    --interaction: #00ff64;
+    --accent-label: #EEFF8C;
+    --text-primary: #09090b;
+    --text-secondary: #676c79;
+    --text-tertiary: #a5aab6;
+    --stroke-primary: #ecedef;
+    --stroke-green: #d4e8da;
+    --font-serif: 'DM Serif Display', Georgia, serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-sans: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--off-white);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* Header */
+  .header {
+    background: var(--green-600);
+    padding: 32px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo svg { width: 120px; }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: var(--accent-label);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--near-black);
+    border-radius: 0;
+  }
+
+  .pill.dark {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 11px;
+  }
+
+  /* Main layout */
+  .main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 24px 120px;
+  }
+
+  .page-title {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--near-black);
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 48px;
+    max-width: 540px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-500);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--stroke-green);
+  }
+
+  /* Fields */
+  .field {
+    margin-bottom: 24px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  label .required {
+    color: var(--green-500);
+    margin-left: 2px;
+  }
+
+  label .hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: 8px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    border-radius: 0;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="number"]:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px rgba(0,140,68,0.08);
+  }
+
+  select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23676c79' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 96px;
+    line-height: 1.5;
+  }
+
+  /* Radio / checkbox groups */
+  .choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .choice-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+
+  .choice-item:hover {
+    border-color: var(--green-500);
+    background: var(--green-50);
+  }
+
+  .choice-item.selected {
+    border-color: var(--green-500);
+    background: var(--green-50);
+  }
+
+  .choice-item input[type="radio"],
+  .choice-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--green-500);
+    cursor: pointer;
+  }
+
+  .choice-label {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-primary);
+  }
+
+  .choice-label strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .choice-label span {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  /* Toggle */
+  .toggle-group {
+    display: flex;
+    gap: 0;
+  }
+
+  .toggle-btn {
+    flex: 1;
+    padding: 10px 16px;
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    border-right: none;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+
+  .toggle-btn:last-child {
+    border-right: 1px solid var(--stroke-green);
+  }
+
+  .toggle-btn.active {
+    background: var(--near-black);
+    color: var(--white);
+    border-color: var(--near-black);
+  }
+
+  .toggle-btn:hover:not(.active) {
+    background: var(--green-50);
+    border-color: var(--green-500);
+  }
+
+  /* Divider */
+  hr {
+    border: none;
+    border-top: 1px solid var(--stroke-green);
+    margin: 40px 0;
+  }
+
+  /* Agent cards */
+  .agents-section {
+    margin: 48px 0;
+  }
+
+  .agents-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .agent-card {
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    padding: 20px;
+    position: relative;
+  }
+
+  .agent-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--green-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+
+  .agent-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .agent-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .agent-status {
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .agent-status.active {
+    color: var(--green-500);
+  }
+
+  /* Settings panel */
+  .settings-panel {
+    background: var(--near-black);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .settings-panel .section-label {
+    color: rgba(255,255,255,0.4);
+  }
+
+  .settings-panel .section-label::after {
+    background: rgba(255,255,255,0.08);
+  }
+
+  .settings-panel label {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .settings-panel input {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    color: #fff;
+  }
+
+  .settings-panel input:focus {
+    border-color: var(--interaction);
+    box-shadow: 0 0 0 3px rgba(0,255,100,0.1);
+  }
+
+  .settings-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    user-select: none;
+  }
+
+  .settings-toggle:hover {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .settings-body {
+    display: none;
+  }
+
+  .settings-body.open {
+    display: block;
+  }
+
+  /* Submit */
+  .submit-zone {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .btn-primary {
+    background: var(--near-black);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background 0.15s;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary:hover {
+    background: var(--green-600);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .submit-note {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Results panel */
+  .results-panel {
+    margin-top: 48px;
+    display: none;
+  }
+
+  .results-panel.visible {
+    display: block;
+  }
+
+  .result-card {
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .result-header {
+    padding: 16px 20px;
+    background: var(--green-50);
+    border-bottom: 1px solid var(--stroke-green);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .result-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .result-body {
+    padding: 20px;
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .result-body pre {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    white-space: pre-wrap;
+    color: var(--text-secondary);
+  }
+
+  .loading-dots {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .loading-dots span {
+    width: 6px;
+    height: 6px;
+    background: var(--green-500);
+    border-radius: 50%;
+    animation: dot-pulse 1.2s infinite;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes dot-pulse {
+    0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Priority score */
+  .priority-banner {
+    background: var(--near-black);
+    border: 1px solid var(--stroke-green);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .priority-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 4px;
+  }
+
+  .priority-score {
+    font-family: var(--font-serif);
+    font-size: 40px;
+    color: var(--interaction);
+    line-height: 1;
+  }
+
+  .priority-breakdown {
+    display: flex;
+    gap: 24px;
+  }
+
+  .priority-item {
+    text-align: right;
+  }
+
+  .priority-item-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 2px;
+  }
+
+  .priority-item-val {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  /* Revenue chart */
+  .revenue-chart {
+    padding: 20px;
+  }
+
+  .rev-bar-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 100px;
+    margin-bottom: 8px;
+  }
+
+  .rev-bar {
+    flex: 1;
+    background: var(--green-500);
+    position: relative;
+    transition: height 0.4s ease;
+    min-width: 0;
+  }
+
+  .rev-bar.accent { background: var(--interaction); }
+
+  .rev-bar-label {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    margin-top: 6px;
+  }
+
+  .rev-value-pill {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-label);
+    color: var(--near-black);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 6px;
+    white-space: nowrap;
+  }
+
+  .chart-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    padding: 0 4px;
+  }
+
+  .chart-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Cohort badge */
+  .cohort-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .cohort-badge.enrolled {
+    background: var(--green-200);
+    color: var(--green-600);
+  }
+
+  .cohort-badge.partial {
+    background: #fff9c4;
+    color: #795500;
+  }
+
+  .cohort-badge.none {
+    background: #fce8e8;
+    color: #a00;
+  }
+
+  /* Revenue settings widget */
+  .rev-settings-widget {
+    position: relative;
+  }
+
+  .rev-settings-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.5);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+  }
+
+  .rev-settings-btn:hover {
+    background: rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.8);
+  }
+
+  .rev-settings-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 360px;
+    background: var(--near-black);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 20px;
+    z-index: 100;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .rev-settings-dropdown.open {
+    display: block;
+  }
+
+  .rev-settings-dropdown input {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .rev-settings-dropdown input:focus {
+    border-color: var(--interaction);
+    box-shadow: 0 0 0 3px rgba(0,255,100,0.1);
+  }
+
+  .rev-settings-dropdown .field {
+    margin-bottom: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .agents-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    .field-row { grid-template-columns: 1fr; }
+    .agents-grid { grid-template-columns: 1fr; }
+    .header { padding: 20px 24px; }
+    .main { padding: 40px 20px 80px; }
+    .page-title { font-size: 36px; }
+    .priority-breakdown { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .priority-banner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">
+    <svg width="120" height="40" viewBox="0 0 784 252" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M111.828 65.6415V88.4663C101.564 72.0112 85.627 61.9258 65.9084 61.9258C23.7703 61.9258 0 92.9782 0 134.647C0 176.581 24.0404 208.695 66.4487 208.695C86.1672 208.695 101.834 198.609 111.828 182.154V204.979H144.782V65.6415H111.828ZM72.9315 181.093C48.8911 181.093 35.1152 159.064 35.1152 134.647C35.1152 110.76 48.621 89.7933 73.4717 89.7933C94.0006 89.7933 111.558 104.391 111.558 134.116C111.558 163.31 94.8109 181.093 72.9315 181.093Z" fill="#ffffff"/>
+      <path d="M173.137 65.6494V204.987H208.252V65.6494H173.137Z" fill="#ffffff"/>
+      <path d="M272.998 100.141V65.6386H237.883V204.976H272.998V125.355C272.998 104.919 287.314 96.691 300.82 96.691C308.653 96.691 316.757 98.8143 321.079 100.407V63.25C298.119 63.25 279.211 76.7856 272.998 100.141Z" fill="#ffffff"/>
+      <path d="M329.629 108.115C329.629 151.377 359.882 182.163 403.371 182.163C447.13 182.163 477.115 151.377 477.115 108.115C477.115 65.6507 447.13 35.3945 403.371 35.3945C359.882 35.3945 329.629 65.6507 329.629 108.115ZM441.997 108.115C441.997 135.187 427.141 154.561 403.371 154.561C379.33 154.561 364.744 135.187 364.744 108.115C364.744 82.1058 379.33 63.2621 403.371 63.2621C427.141 63.2621 441.997 82.1058 441.997 108.115Z" fill="#ffffff"/>
+      <path d="M575.086 61.9258C554.557 61.9258 537.81 73.869 528.896 92.9782V65.6415H493.781V251.425H528.896V180.031C538.891 197.282 557.529 208.695 577.247 208.695C615.604 208.695 642.345 179.235 642.345 137.035C642.345 92.7128 614.523 61.9258 575.086 61.9258ZM568.874 182.685C545.374 182.685 528.896 163.31 528.896 135.708C528.896 107.31 545.374 87.4047 568.874 87.4047C591.293 87.4047 607.23 107.841 607.23 136.77C607.23 163.841 591.293 182.685 568.874 182.685Z" fill="#ffffff"/>
+      <path d="M653.555 156.675C653.555 181.889 676.244 208.695 721.624 208.695C767.274 208.695 783.751 182.42 783.751 161.983C783.751 130.666 746.205 125.092 721.084 120.315C704.066 117.395 693.262 115.007 693.262 105.452C693.262 94.5706 705.417 87.6701 718.383 87.6701C735.94 87.6701 742.693 99.6133 743.233 112.353H778.349C778.349 91.6511 763.492 61.9258 717.572 61.9258C677.865 61.9258 658.147 83.9544 658.147 107.575C658.147 141.282 696.233 144.732 721.354 149.509C735.94 152.163 748.636 155.348 748.636 165.699C748.636 176.05 736.21 182.95 722.975 182.95C710.549 182.95 688.67 176.05 688.67 156.675H653.555Z" fill="#ffffff"/>
+      <path d="M191.339 48.6576C176.921 48.6576 166.578 38.4949 166.578 24.6368C166.578 10.7786 176.921 0 191.339 0C205.13 0 216.1 10.7786 216.1 24.6368C216.1 38.4949 205.13 48.6576 191.339 48.6576Z" fill="#ffffff"/>
+    </svg>
+  </div>
+  <div class="header-meta">
+    <span class="pill dark">Internal</span>
+    <span class="pill dark">Enablement Intake</span>
+    <div class="rev-settings-widget">
+      <button class="rev-settings-btn" onclick="toggleSettings()" title="Revenue model settings">⚙</button>
+      <div class="rev-settings-dropdown" id="settingsBody">
+        <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.35);margin-bottom:16px;">Revenue model</div>
+        <div class="field-row">
+          <div class="field">
+            <label style="color:rgba(255,255,255,0.55);font-size:12px;">Seat cost / yr ($)</label>
+            <input type="number" id="seatCost" placeholder="e.g. 1200" min="0">
+          </div>
+          <div class="field">
+            <label style="color:rgba(255,255,255,0.55);font-size:12px;">Current ACV ($)</label>
+            <input type="number" id="currentACV" placeholder="e.g. 48000">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label style="color:rgba(255,255,255,0.55);font-size:12px;">Adoption rate (%)</label>
+            <input type="number" id="adoptionRate" placeholder="e.g. 70" min="0" max="100">
+          </div>
+          <div class="field">
+            <label style="color:rgba(255,255,255,0.55);font-size:12px;">Churn risk (%)</label>
+            <input type="number" id="churnRisk" placeholder="e.g. 30" min="0" max="100">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <h1 class="page-title">Private enablement<br>request</h1>
+  <p class="page-subtitle">Used by the enablement team to triage, understand context, and prioritize incoming requests. Agents run automatically on submit.</p>
+
+  <!-- Section 1: Who -->
+  <div class="section">
+    <div class="section-label">01 — Who</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Customer name <span class="required">*</span></label>
+        <input type="text" id="customerName" placeholder="e.g. Spotify" oninput="updateCustomerName()">
+      </div>
+      <div class="field">
+        <label>Deal size <span class="required">*</span> <span class="hint">ACV ($)</span></label>
+        <input type="number" id="dealSize" placeholder="e.g. 48000" min="0">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Main point of contact <span class="required">*</span></label>
+        <input type="email" id="pocEmail" placeholder="name@company.com">
+      </div>
+      <div class="field">
+        <label>Requestor (internal) <span class="required">*</span></label>
+        <input type="email" id="requestorEmail" placeholder="your@airops.com">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Who is submitting this request? <span class="required">*</span></label>
+        <div class="toggle-group" id="roleToggle">
+          <button class="toggle-btn" onclick="selectRole('ae', this)">AE</button>
+          <button class="toggle-btn" onclick="selectRole('csm', this)">CSM</button>
+          <button class="toggle-btn" onclick="selectRole('sa', this)">SA</button>
+          <button class="toggle-btn" onclick="selectRole('customer', this)">Customer</button>
+          <button class="toggle-btn" onclick="selectRole('other', this)">Other</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Your name <span class="required">*</span></label>
+        <input type="text" id="requestorName" placeholder="e.g. Jamie Chen">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Slack channel for this customer <span class="hint">optional — for context agent</span></label>
+      <input type="text" id="slackChannel" placeholder="e.g. #ext-spotify or #customer-spotify">
+    </div>
+  </div>
+
+  <!-- Section 2: Foundational level -->
+  <div class="section">
+    <div class="section-label">02 — Skill level</div>
+
+    <div class="field">
+      <label>How would you describe this team's current AirOps experience? <span class="required">*</span></label>
+      <div class="choice-group" id="skillLevel">
+        <label class="choice-item" onclick="selectSingle('skillLevel', this)">
+          <input type="radio" name="skill" value="never">
+          <div class="choice-label">
+            <strong>Never used it</strong>
+            <span>Haven't touched the platform. Complete onboarding needed.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectSingle('skillLevel', this)">
+          <input type="radio" name="skill" value="grid">
+          <div class="choice-label">
+            <strong>Grid runners</strong>
+            <span>Can run workflows but not build or customize them. Operator-level.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectSingle('skillLevel', this)">
+          <input type="radio" name="skill" value="building">
+          <div class="choice-label">
+            <strong>Active builders</strong>
+            <span>Building workflows themselves. Understand the platform but hitting walls.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectSingle('skillLevel', this)">
+          <input type="radio" name="skill" value="advanced">
+          <div class="choice-label">
+            <strong>Advanced / want a challenge</strong>
+            <span>Confident builders. Looking for patterns, edge cases, compound workflows.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectSingle('skillLevel', this)">
+          <input type="radio" name="skill" value="mixed">
+          <div class="choice-label">
+            <strong>Mixed team</strong>
+            <span>Wide range of levels across the group. Curriculum needs to flex.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Motivation -->
+  <div class="section">
+    <div class="section-label">03 — Motivation</div>
+
+    <div class="field">
+      <label>What's the primary reason for this request? <span class="hint">Select all that apply</span> <span class="required">*</span></label>
+      <div class="choice-group" id="motivation">
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="motivation" value="where_start">
+          <div class="choice-label">
+            <strong>Where do I start?</strong>
+            <span>They have use cases in mind but don't know how to begin in AirOps.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="motivation" value="team_spread">
+          <div class="choice-label">
+            <strong>Spread the skill</strong>
+            <span>One champion exists, now they want the rest of their team to learn too.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="motivation" value="build_more">
+          <div class="choice-label">
+            <strong>Just want to build more</strong>
+            <span>Motivated but vague. Needs structured practice and workflow exposure.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="motivation" value="customize">
+          <div class="choice-label">
+            <strong>Customization</strong>
+            <span>Wants to tailor outputs, logic, or prompts for their specific context.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="motivation" value="debug">
+          <div class="choice-label">
+            <strong>Debugging</strong>
+            <span>Workflows aren't behaving as expected. Needs expert troubleshooting support.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="motivation" value="challenge">
+          <div class="choice-label">
+            <strong>Expert seeking a challenge</strong>
+            <span>Already competent. Wants advanced patterns and compound builds.</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Desired outcome -->
+  <div class="section">
+    <div class="section-label">04 — Desired outcome</div>
+
+    <div class="field">
+      <label>What outcome is the customer after? <span class="hint">Select all that apply</span> <span class="required">*</span></label>
+      <div class="choice-group" id="outcomes">
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="outcome" value="team_adoption">
+          <div class="choice-label">
+            <strong>More internal team members using AI</strong>
+            <span>Expand platform usage across the org, not just power users.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="outcome" value="visibility">
+          <div class="choice-label">
+            <strong>Increased internal visibility</strong>
+            <span>Leadership needs to see the team is leveling up and building.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="outcome" value="sa_independence">
+          <div class="choice-label">
+            <strong>Reduced reliance on SA support</strong>
+            <span>Team wants to own and maintain their workflows without hand-holding.</span>
+          </div>
+        </label>
+        <label class="choice-item" onclick="selectMultiple(this)">
+          <input type="checkbox" name="outcome" value="other">
+          <div class="choice-label">
+            <strong>Other</strong>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Context -->
+  <div class="section">
+    <div class="section-label">05 — Context & urgency</div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Estimated team size to enable <span class="required">*</span></label>
+        <input type="number" id="teamSize" placeholder="e.g. 12" min="1">
+      </div>
+      <div class="field">
+        <label>Timeline / urgency <span class="required">*</span></label>
+        <select id="timeline">
+          <option value="">Select urgency</option>
+          <option value="asap">ASAP — active deal or renewal pressure</option>
+          <option value="30days">Within 30 days</option>
+          <option value="flexible">Flexible — no hard deadline</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Is there an active deal, renewal, or expansion tied to this request? <span class="required">*</span></label>
+      <div class="toggle-group" id="dealToggle">
+        <button class="toggle-btn" onclick="selectDeal('yes', this)">Yes</button>
+        <button class="toggle-btn" onclick="selectDeal('no', this)">No</button>
+        <button class="toggle-btn" onclick="selectDeal('unknown', this)">Unknown</button>
+      </div>
+    </div>
+
+    <div class="field" id="dealLinkField" style="display:none;">
+      <label>Deal or renewal link <span class="hint">HubSpot / CRM</span></label>
+      <input type="text" id="dealLink" placeholder="https://app.hubspot.com/...">
+    </div>
+
+    <div class="field">
+      <label>Additional context <span class="hint">What built? Who asked? Why now?</span></label>
+      <textarea id="additionalContext" placeholder="Anything that helps us understand the full picture — what use cases they've mentioned, who the internal champion is, what's been built for them already..."></textarea>
+    </div>
+  </div>
+
+
+  <!-- Agent overview -->
+  <div class="agents-section">
+    <div class="section-label">Agents that run on submit</div>
+    <div class="agents-grid">
+      <div class="agent-card">
+        <div class="agent-icon">🔍</div>
+        <div class="agent-name">HubSpot CRM lookup</div>
+        <div class="agent-desc">Pulls contacts and open deals for <span id="agentCompanyLabel">this company</span> — lifecycle stage, titles, deal amounts.</div>
+        <div class="agent-status active" id="hubspotStatus">● Ready</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon">📋</div>
+        <div class="agent-name">Airtable cohort lookup</div>
+        <div class="agent-desc">Checks cohort enrollment records — who's enrolled, who's completed, and who hasn't been touched yet.</div>
+        <div class="agent-status active" id="airtableStatus">● Ready</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon">💬</div>
+        <div class="agent-name">Slack context brief</div>
+        <div class="agent-desc">Pulls recent messages from the customer channel to surface what's been built and what's blocked.</div>
+        <div class="agent-status" id="slackStatus">○ Needs channel</div>
+      </div>
+      <div class="agent-card">
+        <div class="agent-icon">📈</div>
+        <div class="agent-name">Revenue prediction</div>
+        <div class="agent-desc">Estimates expansion ARR, retention impact, and risk-adjusted revenue using your pricing inputs.</div>
+        <div class="agent-status" id="revenueStatus">○ Needs settings</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-zone">
+    <button class="btn-primary" onclick="submitForm()">Run intake →</button>
+    <span class="submit-note">Agents run automatically</span>
+  </div>
+
+  <!-- Results -->
+  <div class="results-panel" id="resultsPanel">
+
+    <hr>
+
+    <div class="section-label" style="margin-bottom:24px;">Results</div>
+
+    <!-- Submission status -->
+    <div id="submitStatus" style="display:none;font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;margin-bottom:24px;display:flex;gap:16px;flex-wrap:wrap;"></div>
+
+    <!-- Priority score -->
+    <div class="priority-banner" id="priorityBanner" style="display:none;">
+      <div>
+        <div class="priority-label">Priority score</div>
+        <div class="priority-score" id="priorityScore">—</div>
+        <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-top:4px;" id="priorityTier">Calculating...</div>
+      </div>
+      <div class="priority-breakdown" id="priorityBreakdown"></div>
+    </div>
+
+    <!-- HubSpot result -->
+    <div class="result-card" id="hubspotCard">
+      <div class="result-header">
+        <div class="result-title">🔍 HubSpot — Contacts & deals</div>
+        <div class="loading-dots" id="hubspotLoader"><span></span><span></span><span></span></div>
+      </div>
+      <div class="result-body" id="hubspotResult">Searching HubSpot...</div>
+    </div>
+
+    <!-- Airtable result -->
+    <div class="result-card" id="airtableCard">
+      <div class="result-header">
+        <div class="result-title">📋 Airtable</div>
+        <div class="loading-dots" id="airtableLoader"><span></span><span></span><span></span></div>
+      </div>
+      <div class="result-body">
+        <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-500);margin-bottom:10px;">Graduated Content Engineers</div>
+        <div id="graduatesResult">Checking graduates...</div>
+        <div style="border-top:1px solid var(--stroke-green);margin-top:16px;padding-top:16px;">
+          <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-500);margin-bottom:10px;">Cohort enrollment</div>
+          <div id="airtableResult">Checking cohort records...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slack result -->
+    <div class="result-card" id="slackCard">
+      <div class="result-header">
+        <div class="result-title">💬 Slack</div>
+        <div class="loading-dots" id="slackLoader"><span></span><span></span><span></span></div>
+      </div>
+      <div class="result-body">
+        <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-500);margin-bottom:10px;">Notification</div>
+        <div id="slackNotifyResult">Sending...</div>
+        <div style="border-top:1px solid var(--stroke-green);margin-top:16px;padding-top:16px;">
+          <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--green-500);margin-bottom:10px;">Customer channel brief</div>
+          <div id="slackResult">Scanning channel...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue result -->
+    <div class="result-card" id="revenueCard">
+      <div class="result-header">
+        <div class="result-title">📈 Revenue — Retention & expansion estimate</div>
+        <div class="loading-dots" id="revenueLoader"><span></span><span></span><span></span></div>
+      </div>
+      <div class="result-body" id="revenueResult">
+        <div class="revenue-chart" id="revenueChart"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const API = 'http://localhost:3001';
+
+  let selectedRole = null;
+  let selectedDeal = null;
+
+  function updateCustomerName() {
+    const name = document.getElementById('customerName').value || 'this company';
+    document.getElementById('agentCompanyLabel').textContent = name;
+  }
+
+  function selectRole(val, btn) {
+    selectedRole = val;
+    document.getElementById('roleToggle').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  function selectDeal(val, btn) {
+    selectedDeal = val;
+    document.getElementById('dealToggle').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('dealLinkField').style.display = (val === 'yes') ? 'block' : 'none';
+  }
+
+  function selectSingle(groupId, item) {
+    document.getElementById(groupId).querySelectorAll('.choice-item').forEach(el => el.classList.remove('selected'));
+    item.classList.add('selected');
+  }
+
+  function selectMultiple(item) {
+    item.classList.toggle('selected');
+  }
+
+  function toggleSettings() {
+    document.getElementById('settingsBody').classList.toggle('open');
+    updateAgentStatuses();
+  }
+
+  // Close settings dropdown when clicking outside
+  document.addEventListener('click', e => {
+    const widget = document.querySelector('.rev-settings-widget');
+    if (widget && !widget.contains(e.target)) {
+      document.getElementById('settingsBody').classList.remove('open');
+    }
+  });
+
+  function updateAgentStatuses() {
+    const slackCh = document.getElementById('slackChannel').value;
+    document.getElementById('slackStatus').textContent = slackCh ? '● Ready' : '○ Needs channel';
+    document.getElementById('slackStatus').className = 'agent-status' + (slackCh ? ' active' : '');
+
+    const seatCost = document.getElementById('seatCost').value;
+    document.getElementById('revenueStatus').textContent = seatCost ? '● Ready' : '○ Needs settings';
+    document.getElementById('revenueStatus').className = 'agent-status' + (seatCost ? ' active' : '');
+  }
+
+  document.getElementById('slackChannel').addEventListener('input', updateAgentStatuses);
+  document.getElementById('seatCost').addEventListener('input', updateAgentStatuses);
+
+  function getFormData() {
+    const skillEl = document.querySelector('#skillLevel input[type="radio"]:checked');
+    const motivations = [...document.querySelectorAll('#motivation input[type="checkbox"]:checked')].map(el => el.value);
+    const outcomes = [...document.querySelectorAll('#outcomes input[type="checkbox"]:checked')].map(el => el.value);
+    return {
+      customerName: document.getElementById('customerName').value,
+      dealSize: document.getElementById('dealSize').value,
+      pocEmail: document.getElementById('pocEmail').value,
+      requestorName: document.getElementById('requestorName').value,
+      requestorEmail: document.getElementById('requestorEmail').value,
+      requestorRole: selectedRole,
+      slackChannel: document.getElementById('slackChannel').value,
+      skillLevel: skillEl ? skillEl.value : null,
+      motivations,
+      outcomes,
+      teamSize: document.getElementById('teamSize').value,
+      timeline: document.getElementById('timeline').value,
+      dealStatus: selectedDeal,
+      dealLink: document.getElementById('dealLink').value,
+      additionalContext: document.getElementById('additionalContext').value,
+      seatCost: document.getElementById('seatCost').value,
+      currentACV: document.getElementById('currentACV').value || document.getElementById('dealSize').value,
+      adoptionRate: document.getElementById('adoptionRate').value || 70,
+      churnRisk: document.getElementById('churnRisk').value || 30,
+    };
+  }
+
+  // ── Priority score ────────────────────────────────────────────────────────
+
+  function calcPriority(data) {
+    let score = 0;
+    const signals = [];
+    const deal = parseFloat(data.dealSize) || 0;
+    if (deal >= 100000) { score += 30; signals.push({ label: 'Deal size', val: '+30' }); }
+    else if (deal >= 50000) { score += 20; signals.push({ label: 'Deal size', val: '+20' }); }
+    else if (deal >= 20000) { score += 10; signals.push({ label: 'Deal size', val: '+10' }); }
+    else { score += 5; signals.push({ label: 'Deal size', val: '+5' }); }
+    if (data.timeline === 'asap') { score += 25; signals.push({ label: 'Urgency', val: '+25' }); }
+    else if (data.timeline === '30days') { score += 12; signals.push({ label: 'Urgency', val: '+12' }); }
+    else { score += 5; signals.push({ label: 'Urgency', val: '+5' }); }
+    if (data.dealStatus === 'yes') { score += 20; signals.push({ label: 'Active deal', val: '+20' }); }
+    else if (data.dealStatus === 'unknown') { score += 5; signals.push({ label: 'Active deal', val: '+5' }); }
+    const ts = parseInt(data.teamSize) || 0;
+    if (ts >= 20) { score += 15; signals.push({ label: 'Team size', val: '+15' }); }
+    else if (ts >= 10) { score += 10; signals.push({ label: 'Team size', val: '+10' }); }
+    else { score += 5; signals.push({ label: 'Team size', val: '+5' }); }
+    if (data.outcomes.includes('sa_independence')) { score += 10; signals.push({ label: 'SA reduction', val: '+10' }); }
+    return { score: Math.min(score, 100), signals };
+  }
+
+  function getPriorityTier(score) {
+    if (score >= 75) return { label: 'P0 — Enable immediately', color: '#00ff64' };
+    if (score >= 50) return { label: 'P1 — High priority', color: '#EEFF8C' };
+    if (score >= 30) return { label: 'P2 — Schedule next cycle', color: '#ffb347' };
+    return { label: 'P3 — Backlog', color: '#aaa' };
+  }
+
+  // ── Revenue model ─────────────────────────────────────────────────────────
+
+  function calcRevenue(data) {
+    const teamSize = parseInt(data.teamSize) || 5;
+    const seatCost = parseFloat(data.seatCost) || 1200;
+    const currentACV = parseFloat(data.currentACV) || 0;
+    const adoptionRate = parseFloat(data.adoptionRate) / 100 || 0.7;
+    const churnRisk = parseFloat(data.churnRisk) / 100 || 0.3;
+    const adoptedSeats = Math.round(teamSize * adoptionRate);
+    const expansionARR = adoptedSeats * seatCost;
+    const retentionProtected = currentACV * churnRisk;
+    const totalValue = expansionARR + retentionProtected;
+    return { adoptedSeats, expansionARR, retentionProtected, totalValue, teamSize, seatCost, currentACV, adoptionRate, churnRisk };
+  }
+
+  function formatCurrency(val) {
+    if (val >= 1000) return '$' + (val / 1000).toFixed(1) + 'k';
+    return '$' + val.toFixed(0);
+  }
+
+  function renderRevenueChart(rev) {
+    const maxVal = Math.max(rev.expansionARR, rev.retentionProtected, rev.totalValue) || 1;
+    const bars = [
+      { label: 'Expansion ARR', val: rev.expansionARR, accent: false },
+      { label: 'Retention protected', val: rev.retentionProtected, accent: false },
+      { label: 'Total value', val: rev.totalValue, accent: true },
+    ];
+    let html = `<div style="font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-secondary);margin-bottom:16px;">Estimated revenue impact of enablement</div>`;
+    html += `<div class="chart-row">`;
+    bars.forEach(b => {
+      const pct = Math.max((b.val / maxVal) * 100, 4);
+      html += `<div class="chart-bar-wrap">
+        <div style="position:relative;height:100px;display:flex;align-items:flex-end;">
+          <div class="rev-bar${b.accent ? ' accent' : ''}" style="width:100%;height:${pct}%;position:relative;">
+            <div class="rev-value-pill">${formatCurrency(b.val)}</div>
+          </div>
+        </div>
+        <div class="rev-bar-label">${b.label}</div>
+      </div>`;
+    });
+    html += `</div>`;
+    html += `<div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--stroke-green);display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">`;
+    html += `<div><div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);">Adoption rate</div><div style="font-size:18px;font-weight:700;color:var(--near-black);margin-top:4px;">${Math.round(rev.adoptionRate * 100)}%</div><div style="font-size:12px;color:var(--text-secondary);">${rev.adoptedSeats} of ${rev.teamSize} seats</div></div>`;
+    html += `<div><div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);">Seat cost / yr</div><div style="font-size:18px;font-weight:700;color:var(--near-black);margin-top:4px;">${formatCurrency(rev.seatCost)}</div><div style="font-size:12px;color:var(--text-secondary);">per person</div></div>`;
+    html += `<div><div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);">Churn risk</div><div style="font-size:18px;font-weight:700;color:var(--near-black);margin-top:4px;">${Math.round(rev.churnRisk * 100)}%</div><div style="font-size:12px;color:var(--text-secondary);">${formatCurrency(rev.retentionProtected)} at risk</div></div>`;
+    html += `</div>`;
+    return html;
+  }
+
+  // ── MCP agent calls (via local server) ───────────────────────────────────
+
+  async function callAgent(endpoint, body) {
+    const res = await fetch(`${API}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error(`Server error ${res.status}`);
+    return res.json();
+  }
+
+  function renderHubSpotResult(data) {
+    if (data.error) return `<p style="color:#c00;font-size:13px;">${data.error}</p>`;
+    let html = '';
+
+    if (data.contacts?.length) {
+      html += `<div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);margin-bottom:8px;">${data.contacts.length} contact${data.contacts.length !== 1 ? 's' : ''}</div>`;
+      data.contacts.forEach(c => {
+        html += `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--stroke-green);font-size:13px;">
+          <span style="font-weight:600">${c.name}</span>
+          <span style="color:var(--text-secondary);font-size:12px;">${c.title || c.stage || ''}</span>
+        </div>`;
+      });
+    } else {
+      html += `<p style="color:var(--text-secondary);font-size:13px;">No contacts found in HubSpot for this company.</p>`;
+    }
+
+    if (data.deals?.length) {
+      html += `<div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);margin:16px 0 8px;">Deals</div>`;
+      data.deals.forEach(d => {
+        html += `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--stroke-green);font-size:13px;">
+          <span>${d.name}</span>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--green-500);">${d.amount ? formatCurrency(d.amount) : ''} <span style="color:var(--text-tertiary)">${d.stage || ''}</span></span>
+        </div>`;
+      });
+    }
+
+    return html || `<p style="color:var(--text-secondary);font-size:13px;">No data returned.</p>`;
+  }
+
+  function renderGraduatesResult(graduated) {
+    if (!graduated?.length) return `<p style="color:var(--text-secondary);font-size:13px;">No graduates on record from this company.</p>`;
+    let html = `<div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);margin-bottom:8px;">${graduated.length} graduate${graduated.length !== 1 ? 's' : ''} found</div>`;
+    graduated.forEach(g => {
+      html += `<div style="display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--stroke-green);font-size:13px;">
+        <span style="font-weight:600">${g.name} <span style="font-weight:400;color:var(--text-secondary)">${g.cohort ? '· ' + g.cohort : ''}</span></span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);">${g.graduationDate || ''}</span>
+      </div>`;
+    });
+    return html;
+  }
+
+  function renderAirtableResult(data) {
+    if (data.error) return `<p style="color:#c00;font-size:13px;">${data.error}</p>`;
+    if (!data.records?.length) return `<p style="color:var(--text-secondary);font-size:13px;">No cohort records found for this company.</p>`;
+
+    const statusColor = { Completed: 'var(--green-500)', Enrolled: '#795500', 'Not enrolled': '#a00' };
+    let html = `<div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);margin-bottom:8px;">${data.records.length} record${data.records.length !== 1 ? 's' : ''}</div>`;
+    data.records.forEach(r => {
+      const color = statusColor[r.status] || 'var(--text-secondary)';
+      html += `<div style="display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--stroke-green);font-size:13px;">
+        <span style="font-weight:600">${r.name} <span style="font-weight:400;color:var(--text-secondary)">${r.cohort ? '· ' + r.cohort : ''}</span></span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:${color};text-transform:uppercase;letter-spacing:0.06em;">${r.status}</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);">${r.completedDate || r.enrolledDate || ''}</span>
+      </div>`;
+    });
+    return html;
+  }
+
+  function renderSlackResult(data) {
+    if (data.error) return `<p style="color:#c00;font-size:13px;">${data.error}</p>`;
+    if (!data.messages?.length) return `<p style="color:var(--text-secondary);font-size:13px;">No messages found in ${data.channel || 'this channel'}.</p>`;
+
+    let html = `<div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-tertiary);margin-bottom:12px;">#${data.channel} — last ${data.messages.length} messages</div>`;
+    data.messages.forEach(m => {
+      html += `<div style="padding:8px 0;border-bottom:1px solid var(--stroke-green);">
+        <div style="font-size:13px;line-height:1.5;color:var(--text-primary);">${m.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);margin-top:4px;">${m.ts}</div>
+      </div>`;
+    });
+    return html;
+  }
+
+  // ── Submit ────────────────────────────────────────────────────────────────
+
+  async function submitForm() {
+    const data = getFormData();
+    if (!data.customerName || !data.pocEmail || !data.skillLevel || !data.motivations?.length || !data.timeline) {
+      alert('Please fill in all required fields before submitting.');
+      return;
+    }
+
+    document.getElementById('resultsPanel').classList.add('visible');
+    document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Priority score (local)
+    const { score, signals } = calcPriority(data);
+    const tier = getPriorityTier(score);
+    document.getElementById('priorityBanner').style.display = 'flex';
+    document.getElementById('priorityScore').textContent = score;
+    document.getElementById('priorityScore').style.color = tier.color;
+    document.getElementById('priorityTier').textContent = tier.label;
+    document.getElementById('priorityBreakdown').innerHTML = signals.map(s =>
+      `<div class="priority-item">
+        <div class="priority-item-label">${s.label}</div>
+        <div class="priority-item-val" style="color:var(--interaction)">${s.val}</div>
+      </div>`
+    ).join('');
+
+    // Revenue (local)
+    document.getElementById('revenueLoader').style.display = 'none';
+    if (data.seatCost) {
+      document.getElementById('revenueChart').innerHTML = renderRevenueChart(calcRevenue(data));
+    } else {
+      document.getElementById('revenueResult').innerHTML = `<p style="color:var(--text-tertiary);font-size:13px;">Open Revenue model settings above and enter a seat cost to see the projection.</p>`;
+    }
+
+    // Submit: save to Airtable + graduated cross-ref + Slack notify (runs in parallel with agents)
+    callAgent('/api/submit', data)
+      .then(result => {
+        // Status row
+        const statusEl = document.getElementById('submitStatus');
+        statusEl.style.display = 'flex';
+        const pill = (label, ok, detail) =>
+          `<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:${ok ? 'var(--green-200)' : '#fce8e8'};color:${ok ? 'var(--green-600)' : '#a00'};">
+            ${ok ? '✓' : '✗'} ${label}${detail ? ' · ' + detail : ''}
+          </span>`;
+        statusEl.innerHTML = [
+          pill('Saved to Airtable', result.saved),
+          pill('Slack notified', result.slackSent),
+          result.errors.length ? `<span style="color:#a00;font-size:11px;">${result.errors.join(' · ')}</span>` : ''
+        ].filter(Boolean).join('');
+
+        // Graduates section in Airtable card
+        document.getElementById('airtableLoader').style.display = 'none';
+        document.getElementById('graduatesResult').innerHTML = renderGraduatesResult(result.graduated);
+
+        // Slack notification status
+        document.getElementById('slackLoader').style.display = 'none';
+        document.getElementById('slackNotifyResult').innerHTML = result.slackSent
+          ? `<span style="color:var(--green-500);font-size:13px;">✓ Sent to <strong>#private-enablement-requests</strong></span>`
+          : `<span style="color:#a00;font-size:13px;">Failed to send notification</span>`;
+      })
+      .catch(e => {
+        document.getElementById('airtableLoader').style.display = 'none';
+        document.getElementById('graduatesResult').textContent = `Submit failed — ${e.message}`;
+        document.getElementById('slackLoader').style.display = 'none';
+        document.getElementById('slackNotifyResult').textContent = `Submit failed — ${e.message}`;
+      });
+
+    // HubSpot MCP
+    callAgent('/api/hubspot', { customerName: data.customerName, pocEmail: data.pocEmail })
+      .then(result => {
+        document.getElementById('hubspotLoader').style.display = 'none';
+        document.getElementById('hubspotResult').innerHTML = renderHubSpotResult(result);
+      })
+      .catch(e => {
+        document.getElementById('hubspotLoader').style.display = 'none';
+        document.getElementById('hubspotResult').textContent = `HubSpot unavailable — ${e.message}`;
+      });
+
+    // Airtable MCP — cohort enrollment
+    callAgent('/api/airtable', { customerName: data.customerName })
+      .then(result => {
+        document.getElementById('airtableResult').innerHTML = renderAirtableResult(result);
+      })
+      .catch(e => {
+        document.getElementById('airtableResult').textContent = `Cohort lookup unavailable — ${e.message}`;
+      });
+
+    // Slack MCP
+    if (data.slackChannel) {
+      callAgent('/api/slack', { slackChannel: data.slackChannel })
+        .then(result => {
+          document.getElementById('slackLoader').style.display = 'none';
+          document.getElementById('slackResult').innerHTML = renderSlackResult(result);
+        })
+        .catch(e => {
+          document.getElementById('slackLoader').style.display = 'none';
+          document.getElementById('slackResult').textContent = `Slack unavailable — ${e.message}`;
+        });
+    } else {
+      document.getElementById('slackLoader').style.display = 'none';
+      document.getElementById('slackResult').textContent = 'No Slack channel provided — skipped.';
+    }
+  }
+</script>
+</body>
+</html>

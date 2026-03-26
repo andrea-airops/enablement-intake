@@ -1,0 +1,13 @@
+{
+  "name": "enablement-intake",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
