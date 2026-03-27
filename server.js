@@ -71,6 +71,11 @@ function extractArray(parsed, ...keys) {
   return [];
 }
 
+// ─── Health check ─────────────────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.send('Intake server is running');
+});
+
 // ─── Debug: list tools available on each MCP server ───────────────────────
 app.get('/api/debug/tools', async (req, res) => {
   const results = {};
