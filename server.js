@@ -234,40 +234,40 @@ app.post('/api/submit', async (req, res) => {
     debug: 'Debugging', challenge: 'Expert seeking a challenge'
   };
 
-  // 1. Write intake record to "Private Enablement" table — direct REST API, no MCP
+  // 1. Write intake record via Airtable automation webhook
   try {
-    const fields = Object.fromEntries(Object.entries({
-      'Customer Name': f.customerName,
-      'Deal Size': f.dealSize ? Number(f.dealSize) : null,
-      'POC Email': f.pocEmail,
-      'Requestor Name': f.requestorName,
-      'Requestor Email': f.requestorEmail,
-      'Requestor Role': f.requestorRole?.toUpperCase(),
-      'Skill Level': SKILL_LABELS[f.skillLevel] ?? f.skillLevel,
-      'Motivation': (f.motivations ?? []).map(m => MOTIVATION_LABELS[m] ?? m).join(', '),
-      'Desired Outcomes': (f.outcomes ?? []).map(o => OUTCOME_LABELS[o] ?? o).join(', '),
-      'Team Size': f.teamSize ? Number(f.teamSize) : null,
-      'Timeline': f.timeline,
-      'Active Deal': f.dealStatus,
-      'Deal Link': f.dealLink || null,
-      'Slack Channel': f.slackChannel || null,
-      'Additional Context': f.additionalContext || null,
-      'Submitted At': new Date().toISOString()
-    }).filter(([, v]) => v !== null && v !== undefined && v !== ''));
+    const ROLE_LABELS    = { ae: 'AE', csm: 'CSM', sa: 'SA', customer: 'Customer directly', other: 'Other' };
+    const URGENCY_LABELS = { asap: 'High', '30days': 'Medium', flexible: 'Low' };
+    const DEAL_LABELS    = { yes: 'Yes', no: 'No', unknown: 'Unknown' };
 
-    const atRes = await fetch(
-      `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}/${process.env.AIRTABLE_PRIVATE_ENABLEMENT_TABLE_ID}`,
+    const payload = {
+      customerName:  f.customerName,
+      requestorName: f.requestorName,
+      requestorEmail: f.requestorEmail,
+      pocEmail:      f.pocEmail,
+      requestorRole: ROLE_LABELS[f.requestorRole] ?? f.requestorRole,
+      skillLevel:    SKILL_LABELS[f.skillLevel] ?? f.skillLevel,
+      motivations:   (f.motivations ?? []).map(m => MOTIVATION_LABELS[m] ?? m).join(', '),
+      outcomes:      (f.outcomes ?? []).map(o => OUTCOME_LABELS[o] ?? o).join(', '),
+      urgency:       URGENCY_LABELS[f.timeline] ?? f.timeline,
+      dealStatus:    DEAL_LABELS[f.dealStatus] ?? f.dealStatus,
+      dealSize:      f.dealSize,
+      teamSize:      f.teamSize,
+      dealLink:      f.dealLink,
+      slackChannel:  f.slackChannel,
+      additionalContext: f.additionalContext
+    };
+
+    const whRes = await fetch(
+      'https://hooks.airtable.com/workflows/v1/genericWebhook/app7FaQVGXksY7aes/wfloedlwByS7oTwqa/wtrFeY6ylvTtpWuJO',
       {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ fields })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       }
     );
-    const atJson = await atRes.json();
-    if (!atRes.ok) throw new Error(atJson.error?.message ?? JSON.stringify(atJson));
+    const whJson = await whRes.json().catch(() => ({}));
+    if (!whRes.ok) throw new Error(whJson.error ?? `HTTP ${whRes.status}`);
     result.saved = true;
   } catch (err) {
     result.errors.push(`Airtable write: ${err.message}`);
