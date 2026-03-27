@@ -1,11 +1,17 @@
 import express from 'express';
 import cors from 'cors';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // ─── MCP server configs ────────────────────────────────────────────────────
 // Adjust command/args to match however you launch each MCP server locally.
@@ -71,9 +77,9 @@ function extractArray(parsed, ...keys) {
   return [];
 }
 
-// ─── Health check ─────────────────────────────────────────────────────────
+// ─── Serve index.html ─────────────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.send('Intake server is running');
+  res.sendFile(__dirname + '/index.html');
 });
 
 // ─── Debug: list tools available on each MCP server ───────────────────────
@@ -349,6 +355,8 @@ app.post('/api/submit', async (req, res) => {
 
   res.json(result);
 });
+
+export default app;
 
 app.listen(3001, () => {
   console.log('Intake server → http://localhost:3001');
