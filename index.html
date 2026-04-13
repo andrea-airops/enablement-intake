@@ -16,8 +16,8 @@
     --green-200: #CCFFE0;
     --green-500: #008c44;
     --green-600: #002910;
-    --interaction: #00ff64;
-    --accent-label: #EEFF8C;
+    --interaction: #008c44;
+    --accent-label: #dfeae3;
     --text-primary: #09090b;
     --text-secondary: #676c79;
     --text-tertiary: #a5aab6;
@@ -387,7 +387,7 @@
 
   .settings-panel input:focus {
     border-color: var(--interaction);
-    box-shadow: 0 0 0 3px rgba(0,255,100,0.1);
+    box-shadow: 0 0 0 3px rgba(0,140,68,0.1);
   }
 
   .settings-toggle {
@@ -718,7 +718,7 @@
 
   .rev-settings-dropdown input:focus {
     border-color: var(--interaction);
-    box-shadow: 0 0 0 3px rgba(0,255,100,0.1);
+    box-shadow: 0 0 0 3px rgba(0,140,68,0.1);
   }
 
   .rev-settings-dropdown .field {
@@ -738,6 +738,603 @@
     .page-title { font-size: 36px; }
     .priority-breakdown { flex-direction: column; align-items: flex-start; gap: 8px; }
     .priority-banner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+
+  /* ═══════════════════════════════════════════════════
+     ENABLEMENT MENU TABS
+  ═══════════════════════════════════════════════════ */
+
+  .menu-section { margin-bottom: 64px; }
+
+  .tab-nav-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--stroke-green);
+    margin-bottom: 32px;
+  }
+
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: none;
+    margin-bottom: -1px;
+  }
+
+  .tab-nav-btn {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab-nav-btn:hover { color: var(--text-primary); }
+
+  .tab-nav-btn.active {
+    color: var(--near-black);
+    border-bottom-color: var(--interaction);
+  }
+
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* Format cards */
+  .format-card {
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    padding: 24px;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .format-card:hover { border-color: var(--green-500); }
+
+  .format-card.selected {
+    border-color: var(--interaction);
+    box-shadow: 0 0 0 1px var(--interaction);
+  }
+
+  .format-card-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    background: var(--accent-label);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--near-black);
+    margin-bottom: 12px;
+  }
+
+  .format-card-title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--near-black);
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .format-card-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .format-card-best-for {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green-500);
+  }
+
+  /* Expanded detail panel */
+  .format-detail {
+    display: none;
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    border-top: 3px solid var(--interaction);
+    padding: 32px;
+    margin-top: 16px;
+  }
+
+  .format-detail.open { display: block; }
+
+  .format-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .format-detail-title {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--near-black);
+    letter-spacing: -0.02em;
+  }
+
+  .format-detail-close {
+    background: none;
+    border: 1px solid var(--stroke-green);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .format-detail-close:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+  .format-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .detail-section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--green-500);
+    margin-bottom: 12px;
+  }
+
+  .detail-list { list-style: none; padding: 0; }
+
+  .detail-list li {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--stroke-green);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .detail-list li::before {
+    content: '→';
+    color: var(--green-500);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .format-detail-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--stroke-green);
+  }
+
+  .btn-accent {
+    background: var(--interaction);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 0;
+    letter-spacing: -0.01em;
+    transition: opacity 0.15s;
+  }
+
+  .btn-accent:hover { opacity: 0.85; }
+
+  .btn-outline {
+    background: none;
+    color: var(--text-secondary);
+    border: 1px solid var(--stroke-green);
+    padding: 10px 20px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 0;
+    letter-spacing: -0.01em;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .btn-outline:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+  /* Phase timeline */
+  .phases-list { display: flex; flex-direction: column; }
+
+  .phase-item {
+    display: flex;
+    gap: 16px;
+    position: relative;
+  }
+
+  .phase-item::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: -1px;
+    width: 1px;
+    background: var(--stroke-green);
+  }
+
+  .phase-item:last-child::before { display: none; }
+
+  .phase-dot {
+    width: 32px;
+    height: 32px;
+    background: var(--white);
+    border: 2px solid var(--stroke-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--green-500);
+    flex-shrink: 0;
+    z-index: 1;
+    margin-top: 2px;
+  }
+
+  .phase-content { padding-bottom: 24px; flex: 1; }
+
+  .phase-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
+  }
+
+  .phase-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+
+  .phase-duration {
+    display: inline-flex;
+    padding: 2px 7px;
+    background: var(--green-100);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--green-600);
+    margin-top: 5px;
+  }
+
+  /* Sub-format cards */
+  .subformat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .subformat-card {
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    padding: 24px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .subformat-card:hover { border-color: var(--green-500); }
+
+  .subformat-card.active {
+    border-color: var(--interaction);
+    box-shadow: 0 0 0 1px var(--interaction);
+  }
+
+  .subformat-icon { font-size: 22px; margin-bottom: 10px; }
+
+  .subformat-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--near-black);
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+  }
+
+  .subformat-subtitle {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-tertiary);
+    margin-bottom: 8px;
+  }
+
+  .subformat-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
+
+  /* Pricing calculator */
+  .calc-section { margin-bottom: 28px; }
+
+  .calc-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .calc-label-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .calc-label-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--near-black);
+    background: var(--accent-label);
+    padding: 2px 8px;
+  }
+
+  .calc-tooltip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: help;
+    border-bottom: 1px dotted var(--text-tertiary);
+    position: relative;
+  }
+
+  .calc-tooltip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    background: var(--near-black);
+    color: rgba(255,255,255,0.82);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.55;
+    padding: 12px 16px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 50;
+    text-transform: none;
+    letter-spacing: 0;
+    border: 1px solid rgba(255,255,255,0.1);
+    white-space: normal;
+  }
+
+  .calc-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--near-black);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 51;
+  }
+
+  .calc-tooltip:hover::after,
+  .calc-tooltip:hover::before {
+    opacity: 1;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--stroke-green);
+    outline: none;
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--near-black);
+    cursor: pointer;
+    border: 2px solid var(--white);
+    box-shadow: 0 0 0 1px var(--near-black);
+    border-radius: 0;
+  }
+
+  .calc-toggles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 0;
+  }
+
+  .calc-toggle-item {
+    background: var(--white);
+    border: 1px solid var(--stroke-green);
+    padding: 16px;
+  }
+
+  .calc-toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    margin-bottom: 3px;
+  }
+
+  .calc-toggle-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    line-height: 1.4;
+    min-height: 32px;
+  }
+
+  /* Capacity meter */
+  .capacity-meter-wrap {
+    background: var(--near-black);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 28px 32px;
+    margin-top: 28px;
+  }
+
+  .capacity-meter-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .capacity-level-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+
+  .capacity-level-name {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .capacity-price-band { text-align: right; }
+
+  .capacity-price-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+
+  .capacity-price-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .capacity-segments {
+    display: flex;
+    gap: 4px;
+    height: 8px;
+    margin-bottom: 8px;
+  }
+
+  .capacity-segment {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    transition: background 0.3s;
+  }
+
+  .capacity-segment.lit { background: var(--interaction); }
+
+  .capacity-segment-labels {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .capacity-segment-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .capacity-rationale {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+  }
+
+  /* Compare table */
+  .compare-section { margin-top: 16px; display: none; }
+  .compare-section.open { display: block; }
+
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+
+  .compare-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--green-500);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--stroke-green);
+    background: var(--green-50);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--stroke-green);
+    color: var(--text-primary);
+    vertical-align: top;
+    line-height: 1.4;
+  }
+
+  .compare-table tr:last-child td { border-bottom: none; }
+
+  .compare-table td:first-child {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 11px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: var(--font-mono);
+  }
+
+  .check { color: var(--green-500); font-weight: 700; }
+  .dash { color: var(--text-tertiary); }
+
+  @media (max-width: 760px) {
+    .format-detail-grid { grid-template-columns: 1fr; }
+    .subformat-grid { grid-template-columns: 1fr; }
+    .calc-toggles { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -793,6 +1390,416 @@
 
   <h1 class="page-title">Private enablement<br>request</h1>
   <p class="page-subtitle">Used by the enablement team to triage, understand context, and prioritize incoming requests. Agents run automatically on submit.</p>
+
+  <!-- ══════════════════════════════════════════════════
+       ENABLEMENT MENU TABS
+  ═══════════════════════════════════════════════════ -->
+  <div class="menu-section">
+
+    <div class="tab-nav-wrap">
+      <div class="tab-nav" id="mainTabNav">
+        <button class="tab-nav-btn active" onclick="switchTab('cohort', this)">Cohort Enablement</button>
+        <button class="tab-nav-btn" onclick="switchTab('custom', this)">Custom / Private</button>
+        <button class="tab-nav-btn" onclick="switchTab('pricing', this)">Pricing Calculator</button>
+        <button class="tab-nav-btn" onclick="switchTab('intake', this)">Intake Form</button>
+      </div>
+      <button class="btn-outline" style="font-size:11px;padding:7px 14px;margin-bottom:1px;" onclick="toggleCompare()" id="compareBtn">Compare all →</button>
+    </div>
+
+    <!-- ── Tab 1: Cohort ──────────────────────────────────────── -->
+    <div class="tab-pane active" id="tab-cohort">
+
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:28px;">
+        <!-- Overview card -->
+        <div class="format-card selected">
+          <div class="format-card-tag">Multi-week program</div>
+          <div class="format-card-title">Cohort Enablement</div>
+          <div class="format-card-desc">Structured multi-week program with live sessions, async homework, peer learning, and a capstone build day. Designed for net-new builders who need a full ramp from zero to autonomous.</div>
+          <div class="format-card-best-for">Best for: net new builders · internal buy-in · market experts</div>
+          <button class="btn-accent" style="margin-top:16px;font-size:12px;padding:8px 16px;" onclick="selectFormatForCalc('structured-ramp', event)">Select for pricing →</button>
+        </div>
+        <!-- Individual journey -->
+        <div>
+          <div class="detail-section-label" style="margin-bottom:16px;">The individual journey</div>
+          <div class="phases-list">
+            <div class="phase-item">
+              <div class="phase-dot">01</div>
+              <div class="phase-content">
+                <div class="phase-title">Oriented</div>
+                <div class="phase-desc">They understand what the platform can do for their role and have seen a real example that resonates.</div>
+              </div>
+            </div>
+            <div class="phase-item">
+              <div class="phase-dot">02</div>
+              <div class="phase-content">
+                <div class="phase-title">First build</div>
+                <div class="phase-desc">They've shipped one real workflow on their own — however simple. The activation moment.</div>
+              </div>
+            </div>
+            <div class="phase-item">
+              <div class="phase-dot">03</div>
+              <div class="phase-content">
+                <div class="phase-title">Domain fit</div>
+                <div class="phase-desc">They've adapted workflows to their specific context — their data, their prompts, their team's needs.</div>
+              </div>
+            </div>
+            <div class="phase-item">
+              <div class="phase-dot">04</div>
+              <div class="phase-content">
+                <div class="phase-title">Self-sufficient</div>
+                <div class="phase-desc">They build, debug, and iterate without needing Andrea or SA support to move forward.</div>
+              </div>
+            </div>
+            <div class="phase-item">
+              <div class="phase-dot">05</div>
+              <div class="phase-content">
+                <div class="phase-title">Multiplier</div>
+                <div class="phase-desc">They're teaching teammates, documenting patterns, and becoming the team's internal AI resource.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Tab 2: Custom / Private ────────────────────────────── -->
+    <div class="tab-pane" id="tab-custom">
+
+      <div class="section-label" style="margin-bottom:20px;">Choose a format</div>
+
+      <div class="subformat-grid">
+        <div class="subformat-card" id="sf-ramp" onclick="selectSubformat('ramp')">
+          <div class="subformat-icon">🏗</div>
+          <div class="subformat-title">Structured Ramp</div>
+          <div class="subformat-subtitle">Done-with-you</div>
+          <div class="subformat-desc">Weekly use case clinics, rotating guests, train-the-trainer arc. Culminates in an onsite build day.</div>
+        </div>
+        <div class="subformat-card" id="sf-debug" onclick="selectSubformat('debug')">
+          <div class="subformat-icon">🔬</div>
+          <div class="subformat-title">Debug & Optimize</div>
+          <div class="subformat-subtitle">SA-adjacent</div>
+          <div class="subformat-desc">For teams with workflows already in production. Bring your outputs — we diagnose and improve.</div>
+        </div>
+        <div class="subformat-card" id="sf-clinic" onclick="selectSubformat('clinic')">
+          <div class="subformat-icon">💬</div>
+          <div class="subformat-title">Open Q&A / Clinic</div>
+          <div class="subformat-subtitle">No fixed curriculum</div>
+          <div class="subformat-desc">You bring the questions, Andrea steers. Low prep, high flexibility. Best for experienced teams.</div>
+        </div>
+        <div class="subformat-card" id="sf-sprint" onclick="selectSubformat('sprint')">
+          <div class="subformat-icon">⚡</div>
+          <div class="subformat-title">AI Fluency Sprint</div>
+          <div class="subformat-subtitle">Compressed intensive</div>
+          <div class="subformat-desc">A focused 2-day immersive covering AI thinking, prompt fundamentals, and hands-on AirOps builds. Fast upskill, no long-term commitment required.</div>
+        </div>
+      </div>
+
+      <!-- Structured Ramp detail -->
+      <div class="format-detail" id="sf-detail-ramp">
+        <div class="format-detail-header">
+          <div>
+            <div class="format-card-tag">Done-with-you</div>
+            <div class="format-detail-title">Structured Ramp</div>
+          </div>
+          <button class="format-detail-close" onclick="closeDetail('sf-detail-ramp')">×</button>
+        </div>
+        <div class="format-detail-grid">
+          <div>
+            <div class="detail-section-label">What's included</div>
+            <ul class="detail-list">
+              <li>4–6 weekly use case clinics (60 min live)</li>
+              <li>Rotating guest builders (AirOps team or customers)</li>
+              <li>Train-the-trainer arc — one internal person becomes the go-to</li>
+              <li>Full-day onsite (or virtual) build day</li>
+              <li>Post-engagement workflow audit + handoff doc</li>
+            </ul>
+          </div>
+          <div>
+            <div class="detail-section-label">Ideal customer profile</div>
+            <ul class="detail-list">
+              <li>Has 1+ use cases already scoped</li>
+              <li>Wants to build capability, not just deliverables</li>
+              <li>Has a technical champion who can multiply</li>
+              <li>Can commit to weekly 1-hr sessions for 4–6 weeks</li>
+            </ul>
+            <div class="detail-section-label" style="margin-top:20px;">Prerequisites</div>
+            <ul class="detail-list">
+              <li>3–5 use cases documented before kickoff</li>
+              <li>Identified train-the-trainer candidate</li>
+            </ul>
+          </div>
+        </div>
+        <div class="format-detail-actions">
+          <button class="btn-accent" onclick="selectFormatForCalc('structured-ramp', event); switchTab('pricing', document.querySelector('#mainTabNav .tab-nav-btn:nth-child(3)'))">Use in Pricing Calculator</button>
+          <button class="btn-outline" onclick="closeDetail('sf-detail-ramp')">Close</button>
+        </div>
+      </div>
+
+      <!-- Debug & Optimize detail -->
+      <div class="format-detail" id="sf-detail-debug">
+        <div class="format-detail-header">
+          <div>
+            <div class="format-card-tag">SA-adjacent</div>
+            <div class="format-detail-title">Debug & Optimize</div>
+          </div>
+          <button class="format-detail-close" onclick="closeDetail('sf-detail-debug')">×</button>
+        </div>
+        <div class="format-detail-grid">
+          <div>
+            <div class="detail-section-label">What's included</div>
+            <ul class="detail-list">
+              <li>Deep-dive workflow audit (1–3 workflows)</li>
+              <li>Side-by-side debugging session with Andrea</li>
+              <li>Good/bad output analysis + prompt rewrite</li>
+              <li>Config recommendations + documentation</li>
+              <li>30-day async follow-up window</li>
+            </ul>
+          </div>
+          <div>
+            <div class="detail-section-label">Inputs required</div>
+            <ul class="detail-list">
+              <li>Workflow access (shared link or read-only)</li>
+              <li>5+ good output examples</li>
+              <li>5+ bad output examples with notes</li>
+              <li>Current config screenshots or export</li>
+            </ul>
+            <div class="detail-section-label" style="margin-top:20px;">Best for</div>
+            <ul class="detail-list">
+              <li>Workflows already running in production</li>
+              <li>Customization + troubleshooting needs</li>
+              <li>Output quality issues or edge case failures</li>
+            </ul>
+          </div>
+        </div>
+        <div class="format-detail-actions">
+          <button class="btn-accent" onclick="selectFormatForCalc('debug', event); switchTab('pricing', document.querySelector('#mainTabNav .tab-nav-btn:nth-child(3)'))">Use in Pricing Calculator</button>
+          <button class="btn-outline" onclick="closeDetail('sf-detail-debug')">Close</button>
+        </div>
+      </div>
+
+      <!-- AI Fluency Sprint detail -->
+      <div class="format-detail" id="sf-detail-sprint">
+        <div class="format-detail-header">
+          <div>
+            <div class="format-card-tag">Compressed intensive</div>
+            <div class="format-detail-title">AI Fluency Sprint</div>
+          </div>
+          <button class="format-detail-close" onclick="closeDetail('sf-detail-sprint')">×</button>
+        </div>
+        <div class="format-detail-grid">
+          <div>
+            <div class="detail-section-label">What's included</div>
+            <ul class="detail-list">
+              <li>2-day immersive (can be split across 2 weeks)</li>
+              <li>Day 1 — AI thinking fundamentals: prompt design, output evaluation, workflow logic</li>
+              <li>Day 2 — Hands-on AirOps builds: live use case construction from scratch</li>
+              <li>Shared resource doc + prompt pattern library</li>
+              <li>Optional 30-min async debrief in the following week</li>
+            </ul>
+          </div>
+          <div>
+            <div class="detail-section-label">Ideal customer profile</div>
+            <ul class="detail-list">
+              <li>Team needs fast AI upskill before a launch, pitch, or org rollout</li>
+              <li>Can't commit to a multi-week program</li>
+              <li>Mix of beginners and passionate builders — accelerates team-wide AI adoption from multiple starting points</li>
+              <li>Leadership wants tangible output from a short engagement</li>
+            </ul>
+            <div class="detail-section-label" style="margin-top:20px;">Prerequisites</div>
+            <ul class="detail-list">
+              <li>AirOps accounts provisioned before Day 1</li>
+              <li>1–2 real use cases submitted in advance for Day 2 context</li>
+              <li>Full team availability for both days</li>
+            </ul>
+          </div>
+        </div>
+        <div class="format-detail-actions">
+          <button class="btn-accent" onclick="selectFormatForCalc('sprint', event); switchTab('pricing', document.querySelector('#mainTabNav .tab-nav-btn:nth-child(3)'))">Use in Pricing Calculator</button>
+          <button class="btn-outline" onclick="closeDetail('sf-detail-sprint')">Close</button>
+        </div>
+      </div>
+
+      <!-- Open Clinic detail -->
+      <div class="format-detail" id="sf-detail-clinic">
+        <div class="format-detail-header">
+          <div>
+            <div class="format-card-tag">No fixed curriculum</div>
+            <div class="format-detail-title">Open Q&A / Clinic</div>
+          </div>
+          <button class="format-detail-close" onclick="closeDetail('sf-detail-clinic')">×</button>
+        </div>
+        <div class="format-detail-grid">
+          <div>
+            <div class="detail-section-label">What's included</div>
+            <ul class="detail-list">
+              <li>1–3 open sessions (60–90 min each)</li>
+              <li>Customer brings questions, agenda, or blockers</li>
+              <li>Andrea facilitates and steers discussion</li>
+              <li>Light session recap doc sent afterwards</li>
+              <li>No formal homework or deliverables</li>
+            </ul>
+          </div>
+          <div>
+            <div class="detail-section-label">Ideal customer profile</div>
+            <ul class="detail-list">
+              <li>Already building — wants expert time</li>
+              <li>Small team (1–5 people) with targeted questions</li>
+              <li>No bandwidth for a multi-week engagement</li>
+              <li>Scheduling can be ad hoc</li>
+            </ul>
+            <div class="detail-section-label" style="margin-top:20px;">Prerequisites</div>
+            <ul class="detail-list">
+              <li>Basic AirOps familiarity (not for beginners)</li>
+              <li>Arrive with 3–5 specific questions or blockers</li>
+            </ul>
+          </div>
+        </div>
+        <div class="format-detail-actions">
+          <button class="btn-accent" onclick="selectFormatForCalc('clinic', event); switchTab('pricing', document.querySelector('#mainTabNav .tab-nav-btn:nth-child(3)'))">Use in Pricing Calculator</button>
+          <button class="btn-outline" onclick="closeDetail('sf-detail-clinic')">Close</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Tab 3: Pricing Calculator ─────────────────────────── -->
+    <div class="tab-pane" id="tab-pricing">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+        <div>
+          <div class="calc-section">
+            <div class="calc-label">
+              <div class="calc-label-text">
+                Team size
+                <span class="calc-tooltip" data-tip="Team size isn't just headcount — it's the full range of proficiency levels you're facilitating across simultaneously. Larger groups mean more varied questions, different rates at which people consume and integrate new knowledge, and diverging team motives (champions vs. skeptics vs. neutral observers). Each adds preparation and in-session complexity.">Why this matters</span>
+              </div>
+              <div class="calc-label-value" id="teamSizeVal">10</div>
+            </div>
+            <input type="range" id="calcTeamSize" min="1" max="50" value="10" oninput="updateCalc()">
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;"><span>1</span><span>50</span></div>
+          </div>
+
+          <div class="calc-section">
+            <div class="calc-label">
+              <div class="calc-label-text">
+                Number of sessions
+                <span class="calc-tooltip" data-tip="Each session isn't just the hour on the calendar — it represents preparation time, research, curriculum tailoring, and coordination capacity from our team. More sessions means greater ongoing involvement from Andrea and the broader enablement team, not just more time, but more cognitive and scheduling load across the engagement arc.">Why this matters</span>
+              </div>
+              <div class="calc-label-value" id="sessionsVal">4</div>
+            </div>
+            <input type="range" id="calcSessions" min="1" max="10" value="4" oninput="updateCalc()">
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px;"><span>1</span><span>10</span></div>
+          </div>
+
+          <div id="selectedFormatBadge" style="display:none;padding:8px 12px;background:var(--green-50);border:1px solid var(--stroke-green);font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--green-500);">
+            Format pre-set from menu selection
+          </div>
+        </div>
+
+        <div>
+          <div class="calc-toggles">
+            <div class="calc-toggle-item" style="grid-column:1/-1;">
+              <div class="calc-toggle-label">Engagement type</div>
+              <div class="calc-toggle-hint" id="calcEngagementHint">Weekly clinics, rotating guests, train-the-trainer arc, and a culminating build day. Highest facilitation load.</div>
+              <div class="toggle-group" id="calcEngagementToggle">
+                <button class="toggle-btn active" onclick="setCalcEngagement('structured-ramp', this)">Structured Ramp</button>
+                <button class="toggle-btn" onclick="setCalcEngagement('debug', this)">Debug & Optimize</button>
+                <button class="toggle-btn" onclick="setCalcEngagement('clinic', this)">Open Clinic</button>
+                <button class="toggle-btn" onclick="setCalcEngagement('sprint', this)">AI Fluency Sprint</button>
+              </div>
+            </div>
+
+            <div class="calc-toggle-item">
+              <div class="calc-toggle-label">Async support included?</div>
+              <div class="calc-toggle-hint">Adds ~30% capacity load for ongoing Q&A, reviews, and async feedback.</div>
+              <div class="toggle-group" id="calcAsyncToggle">
+                <button class="toggle-btn" onclick="setCalcToggle('async', 'yes', this)">Yes</button>
+                <button class="toggle-btn active" onclick="setCalcToggle('async', 'no', this)">No</button>
+              </div>
+            </div>
+
+            <div class="calc-toggle-item" style="grid-column:1/-1;">
+              <div class="calc-toggle-label">Train-the-trainer component?</div>
+              <div class="calc-toggle-hint">Adds significant prep multiplier — requires additional curriculum, docs, and a separate coaching arc for the internal trainer.</div>
+              <div class="toggle-group" id="calcTTTToggle">
+                <button class="toggle-btn" onclick="setCalcToggle('ttt', 'yes', this)">Yes</button>
+                <button class="toggle-btn active" onclick="setCalcToggle('ttt', 'no', this)">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Capacity meter -->
+      <div class="capacity-meter-wrap">
+        <div class="capacity-meter-header">
+          <div>
+            <div class="capacity-level-label">Delivery capacity required</div>
+            <div class="capacity-level-name" id="capacityLevelName">Medium</div>
+          </div>
+          <div class="capacity-price-band">
+            <div class="capacity-price-label">Suggested price band</div>
+            <div class="capacity-price-value" id="capacityPriceValue">$8k – $18k</div>
+          </div>
+        </div>
+        <div class="capacity-segments">
+          <div class="capacity-segment" id="seg-0"></div>
+          <div class="capacity-segment" id="seg-1"></div>
+          <div class="capacity-segment" id="seg-2"></div>
+          <div class="capacity-segment" id="seg-3"></div>
+          <div class="capacity-segment" id="seg-4"></div>
+          <div class="capacity-segment" id="seg-5"></div>
+          <div class="capacity-segment" id="seg-6"></div>
+          <div class="capacity-segment" id="seg-7"></div>
+        </div>
+        <div class="capacity-segment-labels">
+          <span class="capacity-segment-label">Low</span>
+          <span class="capacity-segment-label">Medium</span>
+          <span class="capacity-segment-label">High</span>
+          <span class="capacity-segment-label">Enterprise</span>
+        </div>
+        <div class="capacity-rationale" id="capacityRationale">
+          Moderate delivery load — a few focused sessions with a manageable team. Suitable for targeted engagements with clear scope.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Compare table (global, below all tabs) -->
+    <div class="compare-section" id="compareSection">
+      <div style="background:var(--white);border:1px solid var(--stroke-green);">
+        <div style="padding:14px 20px;border-bottom:1px solid var(--stroke-green);display:flex;align-items:center;justify-content:space-between;">
+          <div class="section-label" style="margin:0;">Compare all formats</div>
+          <button class="btn-outline" style="font-size:11px;padding:5px 12px;" onclick="toggleCompare()">Close ×</button>
+        </div>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th>Cohort</th>
+              <th>Structured Ramp</th>
+              <th>Debug & Optimize</th>
+              <th>Open Clinic</th>
+              <th>AI Fluency Sprint</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Duration</td><td>5–6 weeks</td><td>4–6 weeks</td><td>1–2 sessions</td><td>1–3 sessions</td><td>2 days</td></tr>
+            <tr><td>Format</td><td>Group cohort</td><td>Done-with-you</td><td>SA-adjacent</td><td>Facilitated Q&A</td><td>Compressed intensive</td></tr>
+            <tr><td>Live sessions</td><td>4–5 workshops</td><td>4–6 clinics</td><td>1–2 deep dives</td><td>1–3 open</td><td>2 full days</td></tr>
+            <tr><td>Async homework</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td></tr>
+            <tr><td>Train-the-trainer</td><td>Optional</td><td><span class="check">✓ Built-in</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td></tr>
+            <tr><td>Capstone / build day</td><td><span class="check">✓ Demo Day</span></td><td><span class="check">✓ Build Day</span></td><td><span class="dash">—</span></td><td><span class="dash">—</span></td><td><span class="check">✓ Day 2</span></td></tr>
+            <tr><td>Best team size</td><td>5–25</td><td>3–15</td><td>1–5</td><td>1–5</td><td>5–20</td></tr>
+            <tr><td>Skill level</td><td>Beginner</td><td>Beginner–Mid</td><td>Active builders</td><td>Mid–Advanced</td><td>Any level</td></tr>
+            <tr><td>Enabler prep load</td><td>High</td><td>High</td><td>Medium</td><td>Low</td><td>Medium–High</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="tab-intake">
 
   <!-- Section 1: Who -->
   <div class="section">
@@ -1132,10 +2139,166 @@
 
   </div>
 
+    </div>
+    <!-- ── end tab-intake ── -->
+
+  </div>
+  <!-- ── end menu section ── -->
+
+  <!-- Logo strip -->
+  <div style="margin-top:72px;padding-top:40px;border-top:1px solid var(--stroke-green);">
+    <div style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-tertiary);text-align:center;margin-bottom:28px;">Companies we've enabled</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;">
+      <span style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--green-100);letter-spacing:-0.03em;">Klaviyo</span>
+      <span style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--green-100);letter-spacing:-0.03em;">KAYAK</span>
+      <span style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--green-100);letter-spacing:-0.03em;">ZoomInfo</span>
+      <span style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--green-100);letter-spacing:-0.03em;">WHOOP</span>
+      <span style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--green-100);letter-spacing:-0.03em;">Spotify</span>
+      <span style="font-family:var(--font-sans);font-size:17px;font-weight:700;color:var(--green-100);letter-spacing:-0.03em;">Webflow</span>
+    </div>
+  </div>
+
 </div>
 
 <script>
   const API = 'http://localhost:3001';
+
+  // ── Enablement Menu ───────────────────────────────────────────
+
+  let calcEngagement = 'structured-ramp';
+  let calcAsync = 'no';
+  let calcTTT = 'no';
+
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    if (btn) btn.classList.add('active');
+    document.getElementById('compareSection').classList.remove('open');
+    document.getElementById('compareBtn').textContent = 'Compare all →';
+  }
+
+  function toggleFormatDetail(detailId, event) {
+    if (event && (event.target.tagName === 'BUTTON' || event.target.closest('button'))) return;
+    const detail = document.getElementById(detailId);
+    const wasOpen = detail.classList.contains('open');
+    detail.classList.toggle('open');
+    if (!wasOpen) setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+
+  function closeDetail(detailId) {
+    document.getElementById(detailId).classList.remove('open');
+  }
+
+  function selectSubformat(sfId) {
+    document.querySelectorAll('.subformat-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('[id^="sf-detail-"]').forEach(d => d.classList.remove('open'));
+    document.getElementById('sf-' + sfId).classList.add('active');
+    const detail = document.getElementById('sf-detail-' + sfId);
+    detail.classList.add('open');
+    setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+
+  function selectFormatForCalc(type, event) {
+    if (event) event.stopPropagation();
+    calcEngagement = type;
+    const types = ['structured-ramp', 'debug', 'clinic', 'sprint'];
+    document.querySelectorAll('#calcEngagementToggle .toggle-btn').forEach((b, i) => {
+      b.classList.toggle('active', types[i] === type);
+    });
+    const hints = {
+      'structured-ramp': 'Weekly clinics, rotating guests, train-the-trainer arc, and a culminating build day. Highest facilitation load.',
+      'debug': 'Deep-dive audit of existing production workflows. Medium prep — requires reviewing customer outputs before each session.',
+      'clinic': 'Customer-led Q&A with no fixed curriculum. Lowest prep load — you show up and facilitate what they bring.',
+      'sprint': '2-day compressed intensive covering AI thinking + hands-on AirOps builds. High-intensity but time-boxed.',
+    };
+    document.getElementById('calcEngagementHint').textContent = hints[type] || '';
+    document.getElementById('selectedFormatBadge').style.display = 'block';
+    updateCalc();
+    // Switch to pricing tab
+    switchTab('pricing', document.querySelector('#mainTabNav .tab-nav-btn:nth-child(3)'));
+    document.getElementById('tab-pricing').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function setCalcEngagement(type, btn) {
+    calcEngagement = type;
+    document.querySelectorAll('#calcEngagementToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const hints = {
+      'structured-ramp': 'Weekly clinics, rotating guests, train-the-trainer arc, and a culminating build day. Highest facilitation load.',
+      'debug': 'Deep-dive audit of existing production workflows. Medium prep — requires reviewing customer outputs before each session.',
+      'clinic': 'Customer-led Q&A with no fixed curriculum. Lowest prep load — you show up and facilitate what they bring.',
+      'sprint': '2-day compressed intensive covering AI thinking + hands-on AirOps builds. High-intensity but time-boxed.',
+    };
+    document.getElementById('calcEngagementHint').textContent = hints[type] || '';
+    updateCalc();
+  }
+
+  function setCalcToggle(key, val, btn) {
+    if (key === 'async') {
+      calcAsync = val;
+      document.querySelectorAll('#calcAsyncToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    } else {
+      calcTTT = val;
+      document.querySelectorAll('#calcTTTToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    }
+    btn.classList.add('active');
+    updateCalc();
+  }
+
+  function updateCalc() {
+    const teamSize = parseInt(document.getElementById('calcTeamSize').value) || 1;
+    const sessions = parseInt(document.getElementById('calcSessions').value) || 1;
+
+    document.getElementById('teamSizeVal').textContent = teamSize;
+    document.getElementById('sessionsVal').textContent = sessions;
+
+    // Score 0–100
+    let score = 0;
+    score += Math.round((teamSize / 50) * 42);   // team: 0–42
+    score += Math.round((sessions / 10) * 35);    // sessions: 0–35
+    const engScore = { 'structured-ramp': 25, 'debug': 14, 'clinic': 8, 'sprint': 20 };
+    score += engScore[calcEngagement] || 15;       // engagement: 8–25
+    if (calcAsync === 'yes') score += 10;
+    if (calcTTT === 'yes') score += 12;
+    score = Math.min(score, 100);
+
+    let tier, price, rationale;
+    if (score >= 75) {
+      tier = 'Enterprise'; price = '$30k+';
+      rationale = 'This engagement requires sustained high-capacity delivery — large team, multiple live sessions, and significant curriculum development. Reserve several weeks on the calendar.';
+    } else if (score >= 50) {
+      tier = 'High'; price = '$18k – $30k';
+      rationale = 'This engagement requires significant prep + live facilitation across a mid-to-large team. Expect full weeks of calendar commitment and dedicated prep blocks.';
+    } else if (score >= 28) {
+      tier = 'Medium'; price = '$8k – $18k';
+      rationale = 'Moderate delivery load — a few focused sessions with a manageable team. Suitable for targeted engagements with clear scope.';
+    } else {
+      tier = 'Low'; price = '$3k – $8k';
+      rationale = 'Light delivery load — 1–2 sessions, small team, minimal prep overhead. Good for a quick clinic or introductory engagement.';
+    }
+
+    document.getElementById('capacityLevelName').textContent = tier;
+    document.getElementById('capacityPriceValue').textContent = price;
+    document.getElementById('capacityRationale').textContent = rationale;
+
+    const litCount = Math.round((score / 100) * 8);
+    for (let i = 0; i < 8; i++) {
+      const seg = document.getElementById('seg-' + i);
+      if (seg) seg.classList.toggle('lit', i < litCount);
+    }
+  }
+
+  function toggleCompare() {
+    const sec = document.getElementById('compareSection');
+    const btn = document.getElementById('compareBtn');
+    const isOpen = sec.classList.toggle('open');
+    btn.textContent = isOpen ? 'Hide compare ×' : 'Compare all →';
+    if (isOpen) setTimeout(() => sec.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+
+  // Init
+  updateCalc();
 
   let selectedRole = null;
   let selectedDeal = null;
@@ -1244,8 +2407,8 @@
   }
 
   function getPriorityTier(score) {
-    if (score >= 75) return { label: 'P0 — Enable immediately', color: '#00ff64' };
-    if (score >= 50) return { label: 'P1 — High priority', color: '#EEFF8C' };
+    if (score >= 75) return { label: 'P0 — Enable immediately', color: '#008c44' };
+    if (score >= 50) return { label: 'P1 — High priority', color: '#dfeae3' };
     if (score >= 30) return { label: 'P2 — Schedule next cycle', color: '#ffb347' };
     return { label: 'P3 — Backlog', color: '#aaa' };
   }
